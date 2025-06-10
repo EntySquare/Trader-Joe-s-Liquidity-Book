@@ -27,10 +27,10 @@ contract CoreDeployer is Script {
         address wNative;
     }
 
-    string[] chains = ["avalanche_fuji", "arbitrum_one_goerli"];
+    string[] chains = ["bnb_smart_chain_testnet"];
 
     function setUp() public {
-        _overwriteDefaultArbitrumRPC();
+        _setupBSCTestnet();
     }
 
     function run() public {
@@ -43,7 +43,7 @@ contract CoreDeployer is Script {
             bytes memory rawDeploymentData = json.parseRaw(string(abi.encodePacked(".", chains[i])));
             Deployment memory deployment = abi.decode(rawDeploymentData, (Deployment));
 
-            console.log("\nDeploying V2.1 on %s", chains[i]);
+            console.log("\nDeploying V2.2 on %s", chains[i]);
 
             vm.createSelectFork(StdChains.getChain(chains[i]).rpcUrl);
 
@@ -79,15 +79,29 @@ contract CoreDeployer is Script {
             console.log("LBQuoter deployed -->", address(quoter));
 
             factoryV2_2.setLBPairImplementation(address(pairImplementation));
-            console.log("LBPair implementation set on factoryV2_2\n");
+            console.log("LBPair implementation set on factoryV2_2");
 
-            uint256 quoteAssets = ILBLegacyFactory(deployment.factoryV2).getNumberOfQuoteAssets();
-            for (uint256 j = 0; j < quoteAssets; j++) {
-                IERC20 quoteAsset = ILBLegacyFactory(deployment.factoryV2).getQuoteAsset(j);
-                factoryV2_2.addQuoteAsset(quoteAsset);
-                console.log("Quote asset whitelisted -->", address(quoteAsset));
+            // 只有当 factoryV2 不是零地址时才尝试获取 quote assets
+            if (deployment.factoryV2 != address(0)) {
+                console.log("Setting up quote assets from existing factory...");
+                uint256 quoteAssets = ILBLegacyFactory(deployment.factoryV2).getNumberOfQuoteAssets();
+                for (uint256 j = 0; j < quoteAssets; j++) {
+                    IERC20 quoteAsset = ILBLegacyFactory(deployment.factoryV2).getQuoteAsset(j);
+                    factoryV2_2.addQuoteAsset(quoteAsset);
+                    console.log("Quote asset whitelisted -->", address(quoteAsset));
+                }
+            } else {
+                console.log("No existing factory found, setting up default quote assets...");
+                // 为首次部署添加默认的 quote assets (WBNB)
+                factoryV2_2.addQuoteAsset(IERC20(deployment.wNative));
+                console.log("Default quote asset (WBNB) whitelisted -->", deployment.wNative);
+                
+                // 可以添加其他常用的代币作为 quote assets
+                // 例如: USDT, USDC, BUSD 等 (如果需要的话)
             }
 
+            // 设置预设配置
+            console.log("Setting up factory presets...");
             uint256[] memory presetList = BipsConfig.getPresetList();
             for (uint256 j; j < presetList.length; j++) {
                 BipsConfig.FactoryPreset memory preset = BipsConfig.getPreset(presetList[j]);
@@ -102,20 +116,33 @@ contract CoreDeployer is Script {
                     preset.maxVolatilityAccumulated,
                     preset.isOpen
                 );
+                console.log("Preset set for binStep -->", preset.binStep);
             }
 
+            // 转移所有权给多签钱包
             factoryV2_2.transferOwnership(deployment.multisig);
+            console.log("Factory ownership transferred to -->", deployment.multisig);
+            
             vm.stopBroadcast();
+
+            console.log("\n=== Deployment Summary ===");
+            console.log("Chain: %s", chains[i]);
+            console.log("Factory V2.2: %s", address(factoryV2_2));
+            console.log("Router V2.2: %s", address(routerV2_2));
+            console.log("Quoter: %s", address(quoter));
+            console.log("Pair Implementation: %s", address(pairImplementation));
+            console.log("Owner: %s", deployment.multisig);
+            console.log("==========================\n");
         }
     }
 
-    function _overwriteDefaultArbitrumRPC() private {
+    function _setupBSCTestnet() private {
         StdChains.setChain(
-            "arbitrum_one_goerli",
+            "bnb_smart_chain_testnet",
             StdChains.ChainData({
-                name: "Arbitrum One Goerli",
-                chainId: 421613,
-                rpcUrl: vm.envString("ARBITRUM_TESTNET_RPC_URL")
+                name: "BNB Smart Chain Testnet",
+                chainId: 97,
+                rpcUrl: "https://data-seed-prebsc-1-s1.bnbchain.org:8545"  // 使用固定的 RPC URL
             })
         );
     }
