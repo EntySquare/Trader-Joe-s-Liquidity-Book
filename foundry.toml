@@ -9,6 +9,8 @@ optimizer_runs = 800
 
 fs_permissions = [{ access = "read", path = "./"}]
 
+gas_limit = 5000000000  # 5 billion gas测试
+
 [fuzz]
 runs = 1024
 
