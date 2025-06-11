@@ -22,7 +22,7 @@ contract OracleHelperTest is Test {
         assertEq(oracle.getSample(oracleId), sample, "testFuzz_SetAndGetSample::1");
         assertEq(oracle.samples[oracleId - 1], sample, "testFuzz_SetAndGetSample::2");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_revert_SetAndGetSample(bytes32 sample) external {
         uint16 oracleId = 0;
 
@@ -107,7 +107,7 @@ contract OracleHelperTest is Test {
         assertEq(previous, sample1, "test_BinarySearchCircular::9");
         assertEq(next, sample1, "test_BinarySearchCircular::10");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_revert_BinarySearch() external {
         bytes32 sample1 = SampleMath.encode(3, 1, 2, 3, 0, 30); // sample at timestamp 0 got overriden
         bytes32 sample2 = SampleMath.encode(3, 2, 3, 4, 5, 10);
@@ -305,7 +305,7 @@ contract OracleHelperTest is Test {
 
         assertEq(oracle.getSample(oracleId).getOracleLength(), newLength, "testFuzz_IncreaseOracleLength::1");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_revert_IncreaseOracleLength(uint16 length, uint16 newLength) external {
         vm.assume(newLength <= length && length > 0);
 
@@ -314,7 +314,7 @@ contract OracleHelperTest is Test {
         vm.expectRevert(OracleHelper.OracleHelper__NewLengthTooSmall.selector);
         oracle.increaseLength(1, newLength);
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_revert_IncreaseOracleLength() external {
         vm.expectRevert(OracleHelper.OracleHelper__InvalidOracleId.selector);
         oracle.increaseLength(0, 10);

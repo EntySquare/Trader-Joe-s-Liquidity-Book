@@ -90,7 +90,7 @@ contract PairParameterHelperTest is Test {
             newParams.getMaxVolatilityAccumulator(), sfp.maxVolatilityAccumulator, "testFuzz_StaticFeeParameters::8"
         );
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_revert_StaticFeeParameters(bytes32 params, StaticFeeParameters memory sfp) external {
         vm.assume(
             sfp.filterPeriod > sfp.decayPeriod || sfp.decayPeriod > Encoded.MASK_UINT12
@@ -133,7 +133,7 @@ contract PairParameterHelperTest is Test {
             "testFuzz_SetVolatilityReference::2"
         );
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_revert_SetVolatilityReference(bytes32 params, uint24 volatilityReference) external {
         vm.assume(volatilityReference > Encoded.MASK_UINT20);
 
@@ -153,7 +153,7 @@ contract PairParameterHelperTest is Test {
             "testFuzz_SetVolatilityAccumulator::2"
         );
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_revert_SetVolatilityAccumulator(bytes32 params, uint24 volatilityAccumulator) external {
         vm.assume(volatilityAccumulator > Encoded.MASK_UINT20);
 
@@ -177,7 +177,7 @@ contract PairParameterHelperTest is Test {
             "testFuzz_SetActiveId::5"
         );
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_getBaseAndVariableFees(bytes32 params, uint16 binStep) external {
         uint256 baseFee = params.getBaseFee(binStep);
         uint256 variableFee = params.getVariableFee(binStep);
@@ -220,7 +220,7 @@ contract PairParameterHelperTest is Test {
             "testFuzz_UpdateTimeOfLastUpdate::2"
         );
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_UpdateVolatilityReference(bytes32 params) external {
         uint256 volAccumulator = params.getVolatilityAccumulator();
         uint256 reductionFactor = params.getReductionFactor();
@@ -306,7 +306,7 @@ contract PairParameterHelperTest is Test {
             "testFuzz_UpdateReferences::4"
         );
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_revert_UpdateReferences(uint40 previousTime, uint40 time) external {
         vm.assume(previousTime > time);
 

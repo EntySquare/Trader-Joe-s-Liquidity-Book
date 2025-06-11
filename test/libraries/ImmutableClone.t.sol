@@ -11,7 +11,7 @@ contract TestImmutableClone is Test {
     function cloneDeterministic(address implementation, bytes memory data, bytes32 salt) public returns (address) {
         return ImmutableClone.cloneDeterministic(implementation, data, salt);
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_CloneDeterministic(bytes32 salt) public {
         address clone = address(ImmutableClone.cloneDeterministic(address(1), "", salt));
 
@@ -66,7 +66,7 @@ contract TestImmutableClone is Test {
 
         assertEq(Implementation(clone).getBytes(b.length), b, "test_CloneDeterministicMaxLength::1");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_CloneDeterministicTooBig() public {
         bytes memory b = new bytes(0xffc8 + 1);
         vm.expectRevert(ImmutableClone.PackedDataTooBig.selector);

@@ -34,7 +34,7 @@ contract BinHelperTest is TestHelper {
         assertEq(amountOutX, amountToBurn.mulDivRoundDown(binReserveX, totalSupply), "testFuzz_GetAmountOutOfBin::1");
         assertEq(amountOutY, amountToBurn.mulDivRoundDown(binReserveY, totalSupply), "testFuzz_GetAmountOutOfBin::2");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetLiquidity(uint128 amountInX, uint128 amountInY, uint256 price) external {
         bytes32 amountsIn = amountInX.encode(amountInY);
 
@@ -132,7 +132,7 @@ contract BinHelperTest is TestHelper {
 
         assertApproxEqAbs(receivedInY, sentInY, ((price - 1) >> 128) + 2, "testFuzz_TryExploitShares::1");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_VerifyAmountsNeqIds(uint128 amountX, uint128 amountY, uint24 activeId, uint24 id) external {
         vm.assume(activeId != id);
 

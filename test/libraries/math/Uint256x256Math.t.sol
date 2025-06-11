@@ -8,7 +8,7 @@ import "../../../src/libraries/math/Uint256x256Math.sol";
 
 contract Uint256x256MathTest is Test {
     using Uint256x256Math for uint256;
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_MulDivRoundDown(uint256 x, uint256 y, uint256 denominator) external {
         if (denominator == 0) {
             vm.expectRevert();
@@ -32,7 +32,7 @@ contract Uint256x256MathTest is Test {
             }
         }
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_MulDivRoundUp(uint256 x, uint256 y, uint256 denominator) external {
         if (denominator == 0) {
             vm.expectRevert();
@@ -59,7 +59,7 @@ contract Uint256x256MathTest is Test {
             assertEq(x.mulDivRoundUp(y, denominator), result, "testFuzz_MulDivRoundUp::1");
         }
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_mulShiftRoundDown(uint256 x, uint256 y, uint8 shift) external {
         (, uint256 prod1) = _getProds(x, y);
         if (prod1 >> shift != 0) {
@@ -69,7 +69,7 @@ contract Uint256x256MathTest is Test {
             assertEq(x.mulShiftRoundDown(y, shift), x.mulDivRoundDown(y, 1 << shift), "testFuzz_mulShiftRoundDown::1");
         }
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_mulShiftRoundUp(uint256 x, uint256 y, uint8 shift) external {
         (, uint256 prod1) = _getProds(x, y);
         if (prod1 >> shift != 0) {
@@ -79,7 +79,7 @@ contract Uint256x256MathTest is Test {
             assertEq(x.mulShiftRoundUp(y, shift), x.mulDivRoundUp(y, 1 << shift), "testFuzz_mulShiftRoundUp::1");
         }
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_ShiftDivRoundDown(uint256 x, uint8 shift, uint256 denominator) external {
         if (denominator == 0) {
             vm.expectRevert();
@@ -99,7 +99,7 @@ contract Uint256x256MathTest is Test {
             }
         }
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_ShiftDivRoundUp(uint256 x, uint8 shift, uint256 denominator) external {
         if (denominator == 0) {
             vm.expectRevert();

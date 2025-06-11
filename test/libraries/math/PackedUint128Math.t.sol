@@ -50,7 +50,7 @@ contract PackedUint128MathTest is Test {
 
         assertEq(x.add(x), bytes32(uint256(2 << 128 | 2)), "test_AddSelf::1");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_AddOverflow() external {
         bytes32 x = bytes32(type(uint256).max);
 
@@ -76,7 +76,7 @@ contract PackedUint128MathTest is Test {
         vm.expectRevert(PackedUint128Math.PackedUint128Math__AddOverflow.selector);
         y3.add(x);
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_Add(bytes32 x, bytes32 y) external {
         uint128 x1 = uint128(uint256(x));
         uint128 x2 = uint128(uint256(x >> 128));
@@ -97,7 +97,7 @@ contract PackedUint128MathTest is Test {
 
         assertEq(x.sub(x), bytes32(0), "test_SubSelf::1");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_SubUnderflow() external {
         bytes32 x = bytes32(0);
 
@@ -118,7 +118,7 @@ contract PackedUint128MathTest is Test {
         vm.expectRevert(PackedUint128Math.PackedUint128Math__SubUnderflow.selector);
         x.sub(y3);
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_Sub(bytes32 x, bytes32 y) external {
         uint128 x1 = uint128(uint256(x));
         uint128 x2 = uint128(uint256(x >> 128));
@@ -147,7 +147,7 @@ contract PackedUint128MathTest is Test {
 
         assertEq(x.gt(y), x1 > y1 || x2 > y2, "testFuzz_GreaterThan::1");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_ScalarMulDivBasisPointRoundDown(bytes32 x, uint128 multipilier) external {
         (uint128 x1, uint128 x2) = x.decode();
 

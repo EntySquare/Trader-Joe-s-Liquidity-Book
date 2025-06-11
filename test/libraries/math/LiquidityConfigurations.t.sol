@@ -20,7 +20,7 @@ contract LiquidityConfigurationsTest is Test {
             "testFuzz_EncodeParams::1"
         );
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_DecodeParams(bytes32 config) external {
         uint64 distributionX = uint64(uint256(config) >> 88);
         uint64 distributionY = uint64(uint256(config) >> 24);
@@ -36,7 +36,7 @@ contract LiquidityConfigurationsTest is Test {
         assertEq(_distributionY, distributionY, "testFuzz_DecodeParams::2");
         assertEq(_id, id, "testFuzz_DecodeParams::3");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetAmountsAndId(bytes32 config, bytes32 amounts) external {
         uint64 distributionX = uint64(uint256(config) >> 88);
         uint64 distributionY = uint64(uint256(config) >> 24);

@@ -44,7 +44,7 @@ contract SampleMathTest is Test {
         assertLe(sampleCreation, type(uint40).max, "testFuzz_GetSampleCreation::1");
         assertEq(uint40(uint256(sample) >> 216), sampleCreation, "testFuzz_GetSampleCreation::2");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetSampleLastUpdate(bytes32 sample) external {
         uint40 sampleCreation = sample.getSampleCreation();
         uint8 sampleLifetime = sample.getSampleLifetime();
@@ -77,7 +77,7 @@ contract SampleMathTest is Test {
         assertEq(sample.getSampleLifetime(), sampleLifetime, "testFuzz_encode::5");
         assertEq(sample.getSampleCreation(), createdAt, "testFuzz_encode::6");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetWeightedAverage(bytes32 sample1, bytes32 sample2, uint40 weight1, uint40 weight2) external {
         uint256 totalWeight = uint256(weight1) + weight2;
 
@@ -117,7 +117,7 @@ contract SampleMathTest is Test {
             assertEq(weightedAverageBinCrossed, wAverageBinCrossed, "testFuzz_GetWeightedAverage::3");
         }
     }
-
+    
     function testFuzz_update(uint40 deltaTime, uint24 activeId, uint24 volatilityAccumulator, uint24 binCrossed)
         external
         pure
@@ -129,7 +129,7 @@ contract SampleMathTest is Test {
         assertEq(cumulativeVolatility, uint64(volatilityAccumulator) * deltaTime, "testFuzz_update::2");
         assertEq(cumulativeBinCrossed, uint64(binCrossed) * deltaTime, "testFuzz_update::3");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_updateWithSample(
         bytes32 sample,
         uint40 deltaTime,

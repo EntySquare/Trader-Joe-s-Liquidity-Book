@@ -11,6 +11,7 @@ contract FeeHelperTest is Test {
     using FeeHelper for uint128;
     using Uint256x256Math for uint256;
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetFeeAmountFrom(uint128 amountWithFee, uint128 fee) external {
         if (fee > Constants.MAX_FEE) {
             vm.expectRevert(FeeHelper.FeeHelper__FeeTooLarge.selector);
@@ -23,6 +24,7 @@ contract FeeHelperTest is Test {
         }
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetFeeAmount(uint128 amount, uint128 fee) external {
         if (fee > Constants.MAX_FEE) {
             vm.expectRevert(FeeHelper.FeeHelper__FeeTooLarge.selector);
@@ -37,6 +39,7 @@ contract FeeHelperTest is Test {
         }
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetCompositionFee(uint128 amountWithFee, uint128 fee) external {
         if (fee > Constants.MAX_FEE) {
             vm.expectRevert(FeeHelper.FeeHelper__FeeTooLarge.selector);
@@ -52,6 +55,7 @@ contract FeeHelperTest is Test {
         assertEq(compositionFee, expectedCompositionFee, "testFuzz_GetCompositionFee::1");
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_GetProtocolFeeAmount(uint128 amount, uint128 fee) external {
         if (fee > Constants.MAX_PROTOCOL_SHARE) {
             vm.expectRevert(FeeHelper.FeeHelper__ProtocolShareTooLarge.selector);

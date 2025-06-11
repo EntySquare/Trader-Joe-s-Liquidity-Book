@@ -33,7 +33,7 @@ contract PriceHelperTest is Test {
 
         assertEq(price128x128, expectedPrice128x128, "testFuzz_ConvertDecimalPriceTo128x128::1");
     }
-
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_revert_ConvertDecimalPriceTo128x128(uint256 price) external {
         // result of `type(uint256).max * 1e18 >> 128`, this is the largest number before the result overflows
         vm.assume(price > 340282366920938463463374607431768211455999999999999999999);
