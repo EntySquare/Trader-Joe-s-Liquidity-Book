@@ -299,7 +299,7 @@ Devnet: https://devnet.meteora.ag/
 * Fee Owner 获得费用的钱包
 
 提供流动性
-1.  ilm 曲线分布策略 LFG
+1. ilm 曲线分布策略 LFG
 https://ilm.jup.ag/
 
 2. single bin strategy 单一币种策略所有流动性都分配到一个单一的池中
